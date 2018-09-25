@@ -7,6 +7,6 @@ import 'tachyons';
 import robots from './robots'
 
 ReactDOM.render(
-	<CardList robots={robots}/>
+	<CardList robots={robots} />
 , document.getElementById('root'));
 registerServiceWorker();
