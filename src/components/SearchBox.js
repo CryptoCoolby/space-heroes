@@ -1,11 +1,11 @@
 import React from 'react'
 
 const SearchBox = ({ searchChange }) => (
-	<div className=''>
+	<div className='pt4 pb4 searchBox'>
 		<input
 			className='pa3 ba b--green bg-lightest-blue shadow-5'
 			type='search'
-			placeholder='Search robots..'
+			placeholder='Find Hero..'
 			onChange={searchChange}
 		/>
 	</div>
