@@ -1,53 +1,54 @@
 import React, {Component} from 'react'
+import { connect } from 'react-redux'
 import ErrorBoundry from '../components/ErrorBoundry'
 import CardList from '../components/CardList'
 import SearchBox from '../components/SearchBox'
-import Scroll from '../components/Scroll'
+// import Scroll from '../components/Scroll'
 import robots from './robots'
+import { setSearchfield } from '../actions'
+
+const mapStateToProps = state => ({
+	searchfield: state.searchfield
+})
+
+const mapDispatchToProps = dispatch => ({
+	onSearchChange: event => dispatch(setSearchfield(event.target.value))
+})
 
 class App extends Component {
 	constructor() {
 		super()
 		this.state = {
-			robots,
-			searchfield: '',
+			robots
 		}
 	}
-	onSearchChange = event => {
-		this.setState({ searchfield: event.target.value })
+	componentDidMount () {
+		// console.log(this.props.store.getState())
+		// fetch('https://jsonplaceholder.typicode.com/users')
+		// 	.then(res => res.json())
+		// 	.then(users => {
+		// 		this.setState({ robots: users })
+		// 	})
 	}
-	// componentDidMount () {
-	// 	fetch('https://jsonplaceholder.typicode.com/users')
-	// 		.then(res => res.json())
-	// 		.then(users => {
-	// 			this.setState({ robots: users })
-	// 		})
-	// }
 	render() {
-		const {robots, searchfield} = this.state
+		const { robots } = this.state
+		const { searchfield, onSearchChange } = this.props
 		const filteredRobots = robots
 			.filter(robot => robot.name.toLowerCase()
 				.includes(searchfield.toLowerCase())
 			)
-		return filteredRobots.length === 0
-		? (
+		return (
 			<div className='tc'>
 				<div className='spaceHeroes'>Space Heroes</div>
-				<SearchBox searchChange={this.onSearchChange}/>
-				<div className='f4'><strong>There is no such Hero</strong></div>
-			</div>
-		) : (
-			<div className='tc'>
-				<div className='spaceHeroes'>Space Heroes</div>
-				<SearchBox searchChange={this.onSearchChange}/>
-				{/* <Scroll> */}
+				<SearchBox searchChange={onSearchChange}/>
 				<ErrorBoundry>
-					<CardList robots={filteredRobots} />
+					{/* <Scroll> */}
+						<CardList robots={filteredRobots} />
+					{/* </Scroll> */}
 				</ErrorBoundry>
-				{/* </Scroll> */}
 			</div>
 		)
 	}
 }
 
-export default App
+export default connect(mapStateToProps, mapDispatchToProps)(App)
