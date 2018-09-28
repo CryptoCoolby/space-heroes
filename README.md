@@ -1,4 +1,4 @@
-Visit the deployment of this project [here](http://cryptocoolby.github.io/space-heroes).
+## See the deployed build [here](http://cryptocoolby.github.io/space-heroes).
 
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
 
