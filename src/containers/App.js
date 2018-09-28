@@ -4,25 +4,25 @@ import ErrorBoundry from '../components/ErrorBoundry'
 import CardList from '../components/CardList'
 import SearchBox from '../components/SearchBox'
 // import Scroll from '../components/Scroll'
-import robots from './robots'
-import { setSearchfield } from '../actions'
+// import robots from './robots'
+import { setSearchfield, requestRobots } from '../actions'
 
-const mapStateToProps = state => ({
-	searchfield: state.searchfield
+const mapStateToProps = ({ searchRobots, requestRobots }) => ({
+	searchfield: searchRobots.searchfield,
+	robots: requestRobots.robots,
+	isPending: requestRobots.isPending,
+	error: requestRobots.error
 })
 
 const mapDispatchToProps = dispatch => ({
-	onSearchChange: event => dispatch(setSearchfield(event.target.value))
+	onSearchChange: event => dispatch(setSearchfield(event.target.value)),
+	onRequestRobots: (	) => dispatch(requestRobots())
 })
 
 class App extends Component {
-	constructor() {
-		super()
-		this.state = {
-			robots
-		}
-	}
+
 	componentDidMount () {
+		this.props.onRequestRobots()
 		// console.log(this.props.store.getState())
 		// fetch('https://jsonplaceholder.typicode.com/users')
 		// 	.then(res => res.json())
@@ -31,8 +31,7 @@ class App extends Component {
 		// 	})
 	}
 	render() {
-		const { robots } = this.state
-		const { searchfield, onSearchChange } = this.props
+		const { searchfield, onSearchChange, robots, isPending, error } = this.props
 		const filteredRobots = robots
 			.filter(robot => robot.name.toLowerCase()
 				.includes(searchfield.toLowerCase())
@@ -43,7 +42,10 @@ class App extends Component {
 				<SearchBox searchChange={onSearchChange}/>
 				<ErrorBoundry>
 					{/* <Scroll> */}
-						<CardList robots={filteredRobots} />
+						{isPending ?
+						<h1>Loading</h1> :
+						(error ? <h1>Ooops. Something went wrong!</h1> : <CardList robots={filteredRobots} />)
+						}
 					{/* </Scroll> */}
 				</ErrorBoundry>
 			</div>
